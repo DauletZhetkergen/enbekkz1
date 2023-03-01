@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="kz">
+<head>
+    <meta charset="UTF-8">
+    <title>Логин</title>
+    <style>
+        nav {
+            background-color: black;
+            margin-top: 0;
+            margin-bottom: auto;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            }
+
+        .navbar-left {
+            font-family: 'Titillium Web', sans-serif;
+            font-size: 15px;
+            color: white;
+            margin: 10px;
+        }
+
+        label {
+            display:inline-block;
+            width: 30%;
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-left: auto;
+            font-size: 20px;
+        }
+
+        input {
+            width: 50%;
+            height: 17px;
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-left: auto;
+            font-size: 15px;
+        }
+
+        .elements {
+            padding: 0;
+            margin-top: 10px;
+            height: 25px;
+        }
+
+        button {
+            margin-top: 5%;
+            margin-left: auto;
+            margin-bottom: auto;
+            width: 125px;
+            height: 7%;
+            display: block;
+            font-size: 15px;
+        }
+
+        .action-form {
+            margin-left: 20%;
+            margin-right: 20%;
+            margin-top: 5%;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>   
+    <nav>
+        <div class="navbar-left">KundelikAIR</div>
+    </nav> 
+    <div class="action-form">
+        <form action="{{ url_for('login') }}" method="post">
+            <div class="elements">
+                <label for="username">Логин</label>
+                <input type="text" id="username" name="username">
+            </div>
+            <div class="elements">    
+                <label for="password1">Пароль</label>
+                <input type="password" id="password1" name="password1">
+            </div>
+
+            <button type="submit" >Логин</button>
+        </form>        
+    </div>
+</body>
+</html>

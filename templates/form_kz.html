@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="kz">
+<head>
+    <meta charset="UTF-8">
+    <title>Жүктеу</title>
+    <style>
+        nav {
+            background-color: black;
+            margin-top: 0;
+            margin-bottom: auto;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            }
+
+        .navbar-left {
+            font-family: 'Titillium Web', sans-serif;
+            font-size: 15px;
+            color: white;
+            margin: 10px;
+        }
+
+        label {
+            display:inline-block;
+            width: 30%;
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-left: auto;
+            font-family: 'Caveat';
+        }
+
+        input {
+            width: 50%;
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-left: auto;
+        }
+
+        li {
+            padding: 0;
+            margin: 0;
+            height: 50px;
+        }
+
+        form {
+            padding: 0;
+            margin: 0;
+        }
+
+        button {
+            margin-top: auto;
+            margin-left: auto;
+            margin-bottom: auto;
+            width: 125px;
+            height: 5%;
+        }
+
+        .language {
+            padding: 0;
+            margin: auto;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <!-- <script>
+        function submitForm(event) {
+            event.preventDefault(); // prevent the default form submission behavior
+            var form = event.target;
+            var formData = new FormData(form);
+            fetch('/selenium-start', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                // handle the response from the Selenium view function
+                console.log(response);
+                // show a success message to the user
+            }).catch(error => {
+                // handle errors
+                console.error(error);
+            });
+        }
+    </script>  -->
+    <nav>
+        <div class="navbar-left">KundelikAIR</div>
+    </nav>      
+    <div class="action-form">
+        <form id="my-form" action="{{url_for('selenium_start')}}" method="post">
+            <ul>
+                <li>
+                    <label for="fio">Аты-жөні бойынша жүктеу</label>
+                    <input type="text" id="fio" name="fio">
+                </li>
+                <li>
+                    <label for="class">Сынып бойынша жалпы жүктеу</label>
+                    <input type="text" id="class" name="class">
+                </li>
+                <li>
+                    <label for="html">Мектеп бойынша жалпы жүктеу</label>
+                    <input name="check" id="html" type="checkbox">
+                </li>
+                <li>
+                    <select name="role">
+                    <option value="0"></option>
+                    <option value="1">Оқушылар</option>
+                    <option value="2">Ата-аналар</option>
+                    <option value="3">Оқушылар және ата-аналар</option>
+                    <option value="5">Қызметкерлер</option>
+                    </select>
+                </li>
+            </ul>
+            <button type="submit" onclick="startTimer()">Жүктеу</button>
+        </form>
+    </div> 
+    <div class="language">
+        <form action="/language" method="post">
+            <select name="language">
+            <option value="ru">Русский</option>
+            </select>
+            <button type="submit">Поменять язык</button>
+        </form>          
+    </div>
+    <div id="wait-message"></div>
+
+    <script>
+        function showWaitMessage() {
+          var waitMessage = document.getElementById("wait-message");
+          waitMessage.innerText = "Жүктеу жүріп жатыр, күте тұрыңыз...";
+        }
+    
+        var form = document.getElementsByTagName("form")[0];
+        form.addEventListener("submit", showWaitMessage);
+
+        var input1 = document.getElementById("fio");
+        var input2 = document.getElementById("class");
+        var input3 = document.getElementById("html");
+
+        input1.addEventListener("input", function() {
+        if (input1.value) {
+            input3.disabled = true;
+        } else {
+            input2.disabled = false;
+            input3.disabled = false;
+        }
+        });
+
+        input2.addEventListener("input", function() {
+        if (input2.value) {
+            input3.disabled = true;
+        } else {
+            input1.disabled = false;
+            input3.disabled = false;
+        }
+        });
+
+        input3.addEventListener("input", function() {
+        if (input3.checked) {
+            input1.disabled = true;
+            input2.disabled = true;
+        } else {
+            input1.disabled = false;
+            input2.disabled = false;
+        }
+        });
+    </script> 
+</body>
+</html>
