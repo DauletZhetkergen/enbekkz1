@@ -1,4 +1,3 @@
-import configparser
 import time
 import openpyxl
 from selenium import webdriver
@@ -10,12 +9,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import date
 import os.path
-config = configparser.ConfigParser()
-config.read("settings.ini")
 
-webDriverPath = config["BASIC"]["WEBDRIVER"]
-admin = config["ADMIN"]["USER"]
-password = config["ADMIN"]["PASS"]
+admin = 'admin.sko'
+password = 'Qwerty123@@@'
 
 
 nameExcel = ""
@@ -26,8 +22,7 @@ def main(roles=0,name="",groupNumber = None,group=False):
     chrome_options = Options()
     chrome_options.add_experimental_option("detach", True)
     chrome_options.add_argument("--lang=ru")
-    services = Service(rf"C:\Users\abdinur\chromedriver.exe")
-    driver = webdriver.Chrome(service=services,options=chrome_options)
+    driver = webdriver.Chrome(options=chrome_options)
     driver.get("https://login.kundelik.kz/login")
     time.sleep(2)
     driver.maximize_window()
@@ -91,39 +86,45 @@ def main(roles=0,name="",groupNumber = None,group=False):
         time.sleep(0.5)
         driver.find_element(By.XPATH, "//input[@value='Найти']").click()
         time.sleep(1.5)
-        foundStudent = driver.find_element(By.XPATH, "//p[@class='found']/strong").text
-        if int(foundStudent) == 1:
-            time.sleep(0.5)
-            if driver.find_element(By.XPATH,"//p[@class='found']/strong"):
+        try:
+            if int(driver.find_element(By.XPATH, "//p[@class='found']/strong").text) == 1:
+                time.sleep(0.5)
+                if driver.find_element(By.XPATH,"//p[@class='found']/strong"):
+                    if roles == 1:
+                        goToStudent(driver)
+                    elif roles == 2:
+                        gotoDirectParent(driver)
+                    elif roles == 3:
+                        goToStudent(driver,True)
+                    elif roles == 5:
+                        gotoTeacher(driver)
+                    else:
+                        pass
+            elif int(driver.find_element(By.XPATH, "//p[@class='found']/strong").text) > 1:
                 if roles == 1:
-                    goToStudent(driver)
+                    print("kirdi")
+                    gotoAllStudent(driver, False)
                 elif roles == 2:
-                    gotoDirectParent(driver)
+                    gotoAllStudentParent(driver)
                 elif roles == 3:
-                    goToStudent(driver,True)
-                elif roles == 4:
-                    gotoTeacher(driver)
-                else:
-                    pass
-        else:
-            if roles == 1:
-                print("kirdi")
-                gotoAllStudent(driver, False)
-            elif roles == 2:
-                gotoAllStudentParent(driver)
-            elif roles == 3:
-                gotoAllStudent(driver, True)
+                    gotoAllStudent(driver, True)
+        except:
+            return 'Ученик не найден'
     elif len(name)==0 and groupNumber != None:
         driver.find_element(By.XPATH, "//input[@id='class']").send_keys(groupNumber)
         driver.find_element(By.XPATH, "//input[@value='Найти']").click()
-        if roles == 1:
-            gotoAllStudent(driver, False)
-        elif roles == 2:
-            gotoAllStudentParent(driver)
-        elif roles == 3:
-            gotoAllStudent(driver, True)
-        else:
-            gotoAllStudent(driver, False)
+        try:
+            if driver.find_element(By.XPATH, "//p[@class='found']/strong"):
+                if roles == 1:
+                    gotoAllStudent(driver, False)
+                elif roles == 2:
+                    gotoAllStudentParent(driver)
+                elif roles == 3:
+                    gotoAllStudent(driver, True)
+                else:
+                    gotoAllStudent(driver, False)
+        except:
+            return 'Класс не найден'
     elif roles==1:
         driver.find_element(By.XPATH, "//li[@class='iGroup']/a[text()='Ученики']").click()
         gotoAllStudent(driver, False)
@@ -639,9 +640,9 @@ def checkParentsExist(parentLogin):
 # 3-ученик и родитель
 # 4 teacher
 # 5 сотрудники
-if __name__=='__main__':
-    # threading.Timer(1.25, webbrowser.open('http://127.0.0.1:8989/')).start()
-    # app.run(port=8989, debug=True)
-    main(roles=1,name = 'Иванов')
+# if __name__=='__main__':
+#     # threading.Timer(1.25, webbrowser.open('http://127.0.0.1:8989/')).start()
+#     # app.run(port=8989, debug=True)
+#     main(roles=1,name = 'Иванов')
 
 

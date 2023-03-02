@@ -7,7 +7,15 @@
 <body>   
     <form action="{{url_for('start')}}">
         <div class="action-form">
-        <p>Жүктеу сәтті аяқталды. logs папкасында сақталды.</p>
+            <p>Жүктеу аяқталды.</p>
+        </div>
+        <div>
+        {% if name %}
+            <p>{{name}} табылмады.</p>
+        {% endif %}
+        {% if group %}
+            <p>{{group}} табылмады.</p>
+        {% endif %}
         </div>
         <button type="submit">Артқа қайту</button>
     </form>

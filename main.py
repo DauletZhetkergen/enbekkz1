@@ -67,6 +67,8 @@ def selenium_start():
     groupNumber = ''
     group = False
     role = 0
+    name_not_found = ''
+    class_not_found = ''
     if request.method == "POST":
         name = request.form.get("fio")
         groupNumber = request.form.get("class")
@@ -74,8 +76,16 @@ def selenium_start():
         if group_True:
             group = True
         role = request.form['role']
-        print(selenium_code.main(int(role), name, groupNumber, group))
-        return render_template('success_kz.html')
+        status = selenium_code.main(int(role), name, groupNumber, group)
+        if status == 'Ученик не найден':
+            name_not_found = name
+        elif status == 'Класс не найден':
+            class_not_found = groupNumber
+        language = session.get('language', 'ru')
+        if language == 'kz':
+            return render_template('success_kz.html', name = name_not_found, group = class_not_found)
+        else:
+            return render_template('success_ru.html', name = name_not_found, group = class_not_found)
         
         
 # Create Logger if doesn't exist
